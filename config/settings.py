@@ -134,4 +134,4 @@ CELERY_TASK_TIME_LIMIT = 30 * 60
 
 # Периодические задачи через базу данных
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
-TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '1234567890:ABCdEFgHiJkLmNoPQrStuVWxYz')
