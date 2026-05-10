@@ -7,7 +7,25 @@ on:
     branches: [ "main" ]
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install flake8
+        run: pip install flake8
+
+      - name: Run flake8
+        run: flake8 . --exclude=venv,migrations,__pycache__,settings.py
+
   test:
+    needs: lint
     runs-on: ubuntu-latest
     services:
       db:
@@ -45,9 +63,6 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Lint with flake8
-        run: flake8 . --exclude=venv,migrations,__pycache__,settings.py
-
       - name: Run tests
         env:
           DB_NAME: habit_tracker_db
@@ -59,8 +74,7 @@ jobs:
           CELERY_RESULT_BACKEND: redis://localhost:6379/0
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        run: |
-          python manage.py test
+        run: python manage.py test
 
   build:
     needs: test
@@ -101,12 +115,12 @@ jobs:
       - name: Start services with Docker Compose
         run: |
           docker compose up -d --build
-          sleep 15   # даём время на запуск всех сервисов
+          sleep 10
 
       - name: Verify that web service responds
-        run: |
-          curl --fail --retry 5 --retry-delay 10 http://localhost:80/swagger/ || exit 1
+        run: curl --fail --retry 5 --retry-delay 5 http://localhost:80/swagger/ || exit 1
 
-      - name: Show running containers (for logs)
+      - name: Show running containers
         if: always()
         run: docker compose ps
+
