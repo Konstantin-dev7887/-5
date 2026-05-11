@@ -4,6 +4,7 @@ from .models import Habit
 from .serializers import HabitSerializer
 from .permissions import IsOwner
 
+
 class HabitListCreateView(generics.ListCreateAPIView):
     """
     GET: список привычек текущего пользователя (с пагинацией).
@@ -15,6 +16,7 @@ class HabitListCreateView(generics.ListCreateAPIView):
     def get_queryset(self):
         return Habit.objects.filter(user=self.request.user)
 
+
 class HabitDetailView(generics.RetrieveUpdateDestroyAPIView):
     """
     GET: просмотр одной привычки.
@@ -25,6 +27,7 @@ class HabitDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, IsOwner]
     queryset = Habit.objects.all()
 
+
 class PublicHabitListView(generics.ListAPIView):
     """
     GET: список публичных привычек (доступно всем).
@@ -34,4 +37,3 @@ class PublicHabitListView(generics.ListAPIView):
 
     def get_queryset(self):
         return Habit.objects.filter(is_public=True)
-

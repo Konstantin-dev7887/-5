@@ -35,7 +35,8 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "is_public",
-                    models.BooleanField(default=False, verbose_name="Публичная"),
+                    models.BooleanField(
+                        default=False, verbose_name="Публичная"),
                 ),
                 (
                     "reward",
@@ -50,7 +51,8 @@ class Migration(migrations.Migration):
                     "duration",
                     models.PositiveIntegerField(
                         default=120,
-                        validators=[django.core.validators.MaxValueValidator(120)],
+                        validators=[
+                            django.core.validators.MaxValueValidator(120)],
                         verbose_name="Время на выполнение (сек)",
                     ),
                 ),
@@ -67,11 +69,13 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "created_at",
-                    models.DateTimeField(auto_now_add=True, verbose_name="Создана"),
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name="Создана"),
                 ),
                 (
                     "updated_at",
-                    models.DateTimeField(auto_now=True, verbose_name="Обновлена"),
+                    models.DateTimeField(
+                        auto_now=True, verbose_name="Обновлена"),
                 ),
                 (
                     "last_reminded",

@@ -15,7 +15,7 @@ class TelegramWebhookTests(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 405)
 
-    @patch('telegram_bot.views.bot')  #  Подменяем бота
+    @patch('telegram_bot.views.bot')  # Подменяем бота
     def test_webhook_with_start_command(self, mock_bot):
         payload = {
             'update_id': 12345,
@@ -60,7 +60,7 @@ class TelegramWebhookErrorTests(TestCase):
         self.assertEqual(response.status_code, 500)
         self.assertEqual(response.json()['status'], 'error')
 
-    @patch('telegram_bot.views.bot')  #  Подменяем бота
+    @patch('telegram_bot.views.bot')  # Подменяем бота
     def test_webhook_handles_user_not_found(self, mock_bot):
         payload = {
             'update_id': 12345,

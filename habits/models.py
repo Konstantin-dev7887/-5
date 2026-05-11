@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+
 class Habit(models.Model):
     """Модель привычки."""
 
@@ -50,9 +51,11 @@ class Habit(models.Model):
         validators=[MinValueValidator(1), MaxValueValidator(7)]
     )
 
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Создана')
+    created_at = models.DateTimeField(
+        auto_now_add=True, verbose_name='Создана')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Обновлена')
-    last_reminded = models.DateTimeField(blank=True, null=True, verbose_name='Последнее напоминание')
+    last_reminded = models.DateTimeField(
+        blank=True, null=True, verbose_name='Последнее напоминание')
 
     def __str__(self):
         return f"{self.user}: {self.action} в {self.time} в {self.place}"
@@ -61,4 +64,3 @@ class Habit(models.Model):
         verbose_name = 'Привычка'
         verbose_name_plural = 'Привычки'
         ordering = ['-created_at']
-

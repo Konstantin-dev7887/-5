@@ -4,6 +4,7 @@ from rest_framework.test import APIClient
 from rest_framework import status
 from .models import User
 
+
 class UserAuthTests(TestCase):
     def setUp(self):
         self.client = APIClient()
@@ -27,9 +28,9 @@ class UserAuthTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('access', response.data)
 
+
 class UserModelTest(TestCase):
     def test_user_str_method(self):
         """Тест строкового представления пользователя."""
         user = User.objects.create_user(username='testuser_str')
         self.assertEqual(str(user), 'testuser_str')
-

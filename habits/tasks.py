@@ -7,6 +7,7 @@ from .models import Habit
 
 logger = logging.getLogger(__name__)
 
+
 @shared_task
 def send_habit_reminders():
     """Периодическая задача для отправки напоминаний о привычках."""
@@ -20,13 +21,18 @@ def send_habit_reminders():
     ).exclude(user__telegram_chat_id__isnull=True)
 
     for habit in habits:
-        message = f"🔔 Напоминание о привычке:\n📍 {habit.place}\n🕒 {habit.time}\n⚡ {habit.action}"
+        message = f"🔔 Напоминание о привычке:\n📍 {
+            habit.place}\n🕒 {
+            habit.time}\n⚡ {
+            habit.action}"
         if habit.reward:
             message += f"\n🎁 Вознаграждение: {habit.reward}"
         try:
             bot.send_message(habit.user.telegram_chat_id, message)
             habit.last_reminded = now
             habit.save(update_fields=['last_reminded'])
-            logger.info(f"Напоминание отправлено пользователю {habit.user.username}")
+            logger.info(
+                f"Напоминание отправлено пользователю {
+                    habit.user.username}")
         except Exception as e:
             logger.error(f"Ошибка отправки для {habit.user.username}: {e}")

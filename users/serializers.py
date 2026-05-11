@@ -2,6 +2,7 @@ from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import User
 
+
 class UserSerializer(serializers.ModelSerializer):
     """Сериализатор для регистрации пользователя."""
     password = serializers.CharField(write_only=True)
@@ -19,6 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
             telegram_chat_id=validated_data.get('telegram_chat_id', '')
         )
         return user
+
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     """Добавляем в токен дополнительную информацию."""

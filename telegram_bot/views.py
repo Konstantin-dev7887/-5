@@ -10,6 +10,7 @@ from users.models import User
 logger = logging.getLogger(__name__)
 bot = telebot.TeleBot(settings.TELEGRAM_BOT_TOKEN)
 
+
 @csrf_exempt
 @require_POST
 def telegram_webhook(request):
@@ -28,14 +29,19 @@ def telegram_webhook(request):
                 user = User.objects.get(username=username)
                 user.telegram_chat_id = chat_id
                 user.save()
-                bot.send_message(chat_id, f"Привет, {username}! Твой Chat ID сохранён. Я буду присылать тебе напоминания о привычках.")
-                logger.info(f"Chat ID {chat_id} сохранён для пользователя {username}")
+                bot.send_message(
+                    chat_id,
+                    f"Привет, {username}! Твой Chat ID сохранён. Я буду присылать тебе напоминания о привычках.")
+                logger.info(
+                    f"Chat ID {chat_id} сохранён для пользователя {username}")
             except User.DoesNotExist:
-                bot.send_message(chat_id, "Привет! Я бот трекера привычек. Похоже, у тебя ещё нет аккаунта. Зарегистрируйся, пожалуйста, и укажи свой username.")
-                logger.warning(f"Пользователь с username {username} не найден.")
+                bot.send_message(
+                    chat_id,
+                    "Привет! Я бот трекера привычек. Похоже, у тебя ещё нет аккаунта. Зарегистрируйся, пожалуйста, и укажи свой username.")
+                logger.warning(
+                    f"Пользователь с username {username} не найден.")
 
         return JsonResponse({'status': 'ok'})
     except Exception as e:
         logger.error(f"Ошибка обработки вебхука: {e}")
         return JsonResponse({'status': 'error'}, status=500)
-
